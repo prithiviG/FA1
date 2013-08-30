@@ -17,7 +17,7 @@ namespace FA
 {
     public partial class frmBRSPrevYr : DevExpress.XtraEditors.XtraForm
     {
-        #region Variable
+        #region Variables
         DataSet m_dsData = new DataSet();
         DataTable m_dtBook;
         DataTable m_dtAccHeads;
