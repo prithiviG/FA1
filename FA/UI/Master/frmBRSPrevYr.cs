@@ -17,7 +17,7 @@ namespace FA
 {
     public partial class frmBRSPrevYr : DevExpress.XtraEditors.XtraForm
     {
-        #region Variables
+        #region Variable
         DataSet m_dsData = new DataSet();
         DataTable m_dtBook;
         DataTable m_dtAccHeads;
@@ -51,10 +51,10 @@ namespace FA
 
         #region Form Load
         private void frmBRSPrevYr_Load(object sender, EventArgs e)
-        {  
+        {
+            dwBRSReg.Select();
+            dwBRS.Hide();
             PopulateDefaultData();
-            vGridBRS.Hide();
-            standaloneBarDockControl5.Visible = false;
             dockRemarks.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Visible;
             dockRemarks.Dock = DevExpress.XtraBars.Docking.DockingStyle.Bottom;
          
@@ -71,6 +71,7 @@ namespace FA
         }
         private void PopulateDefaultData()
         {
+       
             clsStatic.SetMyGraphics();
 
             m_dtBook = new DataTable();
@@ -140,19 +141,12 @@ namespace FA
             grdViewBRSReg.Columns["Debit"].Width = 50;
             grdViewBRSReg.Columns["Debit"].AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Far;
             grdViewBRSReg.Columns["Debit"].OptionsColumn.AllowEdit = false;
-            grdViewBRSReg.Columns["Debit"].SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Sum;
-            grdViewBRSReg.Columns["Debit"].SummaryItem.DisplayFormat = clsStatic.sFormatTotAmt;
-            grdViewBRSReg.Columns["Debit"].DisplayFormat.FormatType = FormatType.Numeric;
 
             grdViewBRSReg.Columns["Credit"].Visible = true;
             grdViewBRSReg.Columns["Credit"].Caption = "Credit";
             grdViewBRSReg.Columns["Credit"].Width = 50;
             grdViewBRSReg.Columns["Credit"].AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Far;
             grdViewBRSReg.Columns["Credit"].OptionsColumn.AllowEdit = false;
-            grdViewBRSReg.Columns["Credit"].SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Sum;
-            grdViewBRSReg.Columns["Credit"].SummaryItem.DisplayFormat = clsStatic.sFormatTotAmt;
-            grdViewBRSReg.Columns["Credit"].DisplayFormat.FormatType = FormatType.Numeric;
-
 
             grdViewBRSReg.Columns["BRS"].Visible = true;
             RepositoryItemCheckEdit chkSel = new RepositoryItemCheckEdit();
@@ -171,7 +165,6 @@ namespace FA
             grdViewBRSReg.Columns["BRSDate"].AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Near;
             grdViewBRSReg.Columns["BRSDate"].OptionsColumn.AllowEdit = true;
             grdViewBRSReg.Columns["BRSDate"].ColumnEdit = dtpVoucherDate;
-            grdViewBRSReg.Columns["BRSDate"].OptionsColumn.ReadOnly = true;
            
 
             grdViewBRSReg.OptionsCustomization.AllowFilter = false;
@@ -205,19 +198,16 @@ namespace FA
                 if (dtBRSDate >= dtVoucherDate)
                 {
                     grdViewBRSReg.SetRowCellValue(grdViewBRSReg.FocusedRowHandle, "BRSDate", dtBRSDate);
-                    grdViewBRSReg.Columns["BRSDate"].OptionsColumn.ReadOnly = false;
                 }
                 else
                 {
                     MessageBox.Show("BRS Date Should be Greater then VoucherDate", "FA", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                   
                 }
                
             }
             else
             {
                 grdViewBRSReg.SetRowCellValue(grdViewBRSReg.FocusedRowHandle, "BRSDate", DBNull.Value);
-                grdViewBRSReg.Columns["BRSDate"].OptionsColumn.ReadOnly = true;
             }
             grdViewBRSReg.CloseEditor();
         }
@@ -332,8 +322,10 @@ namespace FA
             if (m_iEntryId == 0)
             {
                 EntryBL.Update_BRS_PervYr(m_iEntryId);
-                //Clear_BRS_VGrid();
+                Clear_BRS_VGrid();
                 Fill_BRS_Register();
+                dwBRSReg.Show();
+                dwBRSReg.Select();
             }
             else
             {
@@ -341,14 +333,7 @@ namespace FA
                 Fill_BRS_Register();
                 this.Close();
             }
-            //grdBRSReg.Visible = true;
-            dockRemarks.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Hidden;
-            Fill_VGrid_BRS();
-            if (grdBRSReg.Visible == true)
-            {
-                standaloneBarDockControl5.Visible = false;
-            }
-            //grdViewBRSReg.FocusedRowHandle = 0;
+            grdViewBRSReg.FocusedRowHandle = 0;
         }
 
         private void Clear_BRS_VGrid()
@@ -894,6 +879,9 @@ namespace FA
                     btnOk.Enabled = true;
                 }
                 btnBRSExit.Enabled = false;
+               
+                dwBRS.Show();
+                dwBRS.Select();
             }
         }
 
@@ -905,12 +893,9 @@ namespace FA
         private void btnAdd_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             m_bDW = true;
-            vGridBRS.Show();
-            
-            standaloneBarDockControl5.Visible = true;
-            btnRegister.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
+            dwBRS.Show();
+            dwBRS.Select();
             dockRemarks.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Hidden;
-            grdBRSReg.Visible = false;
             Fill_VGrid_BRS();
             btnOk.Enabled = true;
             btnBRSExit.Enabled = true;
@@ -932,7 +917,24 @@ namespace FA
                 return;
         }
 
-      
+        private void radDock1_ActiveWindowChanged(object sender, Telerik.WinControls.UI.Docking.DockWindowEventArgs e)
+        {
+            if (radDock1.ActiveWindow.Name == "dwBRSReg" && m_bDW==false)
+            {
+                dwBRS.Hide();
+                dwBRSReg.Show();
+                grdBRSReg.Focus();
+                dockRemarks.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Visible;
+                dockRemarks.Dock = DevExpress.XtraBars.Docking.DockingStyle.Bottom;
+               
+            }
+            if (radDock1.ActiveWindow.Name == "dwBRS")
+            {
+                dwBRS.Show();
+                dockRemarks.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Hidden;
+            }
+        }
+
         private void btnBRSExit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             if(m_iEntryId==0)
@@ -946,13 +948,5 @@ namespace FA
             }
         }
 
-        private void btnRegister_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            grdBRSReg.Visible = true;
-            if (grdBRSReg.Visible == true)
-            {
-                standaloneBarDockControl5.Visible = false;
-            }
-        }
     }
 }
