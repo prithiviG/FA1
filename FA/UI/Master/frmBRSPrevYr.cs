@@ -809,7 +809,7 @@ namespace FA
             string sText = string.Empty;
             txtNarration.Text = "";
 
-            sText += String.Format("ChequeNo   : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "ChequeN"), Environment.NewLine);
+            sText += String.Format("ChequeNo   : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "ChequeNo"), Environment.NewLine);
             sText += String.Format("ChequeDate : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "ChequeDate"), Environment.NewLine);
             sText += String.Format("Narration  : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "Narration"), Environment.NewLine);
             txtNarration.Text = sText;
