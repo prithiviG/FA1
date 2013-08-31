@@ -17,7 +17,7 @@ namespace FA
 {
     public partial class frmBRSPrevYr : DevExpress.XtraEditors.XtraForm
     {
-        #region Variablesss
+        #region Variables
         DataSet m_dsData = new DataSet();
         DataTable m_dtBook;
         DataTable m_dtAccHeads;
@@ -809,7 +809,7 @@ namespace FA
             string sText = string.Empty;
             txtNarration.Text = "";
 
-            sText += String.Format("ChequeNo   : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "ChequeNo"), Environment.NewLine);
+            sText += String.Format("ChequeNo   : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "ChequeN"), Environment.NewLine);
             sText += String.Format("ChequeDate : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "ChequeDate"), Environment.NewLine);
             sText += String.Format("Narration  : {0}{1}", grdViewBRSReg.GetRowCellValue(e.FocusedRowHandle, "Narration"), Environment.NewLine);
             txtNarration.Text = sText;
