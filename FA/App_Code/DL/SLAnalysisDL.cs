@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
+
+
 using FA.BusinessLayer;
 
 namespace FA.DataLayer
@@ -16,12 +18,12 @@ namespace FA.DataLayer
             
             if (arg_sAccTypeIds != string.Empty)
             {
-                sCond = String.Format("AND AM.TypeId IN ({0})", arg_sAccTypeIds)
+                sCond = String.Format("AND AM.TypeId IN ({0})", arg_sAccTypeIds);
             }
             
             if (arg_iCCId <= 0)
             {
-                sSql = String.Format("SELECT SUM(OpeningBalance) OpeningBalance FROM dbo.SLAccount  " +
+                sSql = String.Format("SELECT SUM(OpeningBal) OpeningBalance FROM dbo.SLAccount  " +
                                      "WHERE  SubLedgerId={1} AND CompanyId= {2} AND ParentAccountId IN (" +
                                      "SELECT SL.ParentAccountId FROM dbo.SLAccount SL " +
                                      "INNER JOIN [{3}].dbo.SubLedgerMaster SLM ON SL.SubLedgerId=SLM.SubLedgerId " +
