@@ -146,7 +146,7 @@ namespace FA
             {
                 if (BsfGlobal.FindPermission("Bank-Add") == false)
                 {
-                    MessageBox.Show("No Rights to Access this event", "Build SuperFast ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No Rights to Access this event", "Build Super Fast ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 m_bAdd = true;
